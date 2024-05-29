@@ -8,16 +8,17 @@ const btn = document.querySelectorAll('.btn')
 const btnNew = document.querySelector('.btn--new')
 const btnRoll = document.querySelector('.btn--roll')
 const btnHold = document.querySelector('.btn--hold')
-const activePlayer = document.querySelector('.player--active')
-const playerScore0 = document.getElementById('current--0')
-const playerScore1 = document.getElementById('current--1')
+const player0 = document.querySelector('.player--0')
+const player1 = document.querySelector('.player--1')
 
 
 score0El.textContent = 0
 score1El.textContent = 0
 diceEl.classList.add('hidden')
 
+const scores = [0, 0]
 let currScore = 0
+let activePlayer = 0
 
 // Rolling Dice Logic
 btnRoll.addEventListener('click', function () {
@@ -26,12 +27,20 @@ btnRoll.addEventListener('click', function () {
     diceEl.classList.remove('hidden')
     diceEl.src = `./img/dice-${dice_value}.png`
 
+    let active = document.getElementById(`current--${activePlayer}`)
+
     if (dice_value !== 1) {
         currScore += dice_value
-        playerScore0.textContent = `${currScore}` // change in future
-
+        active.textContent = `${currScore}` // change in future
     } else {
-        // Next Player
+        scores[activePlayer] += currScore
+        active.textContent = 0
+        activePlayer = activePlayer === 0 ? 1 : 0  
+
+        currScore = 0
+
+        player0.classList.toggle('player--active')
+        player1.classList.toggle('player--active')
     }
 
 })
